@@ -1,1 +1,8 @@
-<button mat-button color="primary">Primary</button>
+<div id="app-home" class="tw-p-2.5">
+  <input type="file" id="upload-docx" style="display: none" />
+  <button nz-button nzType="primary" class="tw-mb-2.5" (click)="uploadFile()">
+    upload Docx
+  </button>
+
+  <div id="jsonEditor"></div>
+</div>
