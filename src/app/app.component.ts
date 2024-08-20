@@ -30,8 +30,12 @@ export class AppComponent implements OnInit, AfterViewInit {
     this.document
       .getElementById('upload-docx')!
       .addEventListener('change', (event) => {
-        const file = (event.target as HTMLInputElement).files?.[0];
-        file && this.readDocx(file);
+        const inputEl = event.target as HTMLInputElement;
+        const file = inputEl.files?.[0];
+        if (file) {
+          this.readDocx(file);
+          inputEl.value = '';
+        }
       });
   }
 
