@@ -23,20 +23,18 @@ export class AppComponent implements OnInit, AfterViewInit {
   ngOnInit() {}
   ngAfterViewInit() {
     this.initializeJsonEditor();
-    this.subscribeFileUpload();
   }
 
-  private subscribeFileUpload() {
-    this.document
-      .getElementById('upload-docx')!
-      .addEventListener('change', (event) => {
-        const inputEl = event.target as HTMLInputElement;
-        const file = inputEl.files?.[0];
-        if (file) {
-          this.readDocx(file);
-          inputEl.value = '';
-        }
-      });
+  onFileSelected(event: Event) {
+    const fileInput = event.target as HTMLInputElement;
+    const file = fileInput.files?.[0];
+
+    if (file) {
+      this.readDocx(file);
+    }
+
+    fileInput.value = '';
+    console.log('run');
   }
 
   private initializeJsonEditor() {

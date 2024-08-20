@@ -1,5 +1,10 @@
 <div id="app-home" class="tw-p-2.5">
-  <input type="file" id="upload-docx" style="display: none" />
+  <input
+    type="file"
+    id="upload-docx"
+    style="display: none"
+    (change)="onFileSelected($event)"
+  />
   <button nz-button nzType="primary" class="tw-mb-2.5" (click)="uploadFile()">
     upload Docx
   </button>
