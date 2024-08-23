@@ -1,13 +1,42 @@
 <div id="app-home" class="tw-p-2.5">
-  <input
-    type="file"
-    id="upload-docx"
-    style="display: none"
-    (change)="onFileSelected($event)"
-  />
-  <button nz-button nzType="primary" class="tw-mb-2.5" (click)="uploadFile()">
-    upload Docx
-  </button>
-
-  <div id="jsonEditor"></div>
+  <div class="jsonContainer tw-flex tw-h-full tw-gap-2.5">
+    <section>
+      <div class="">
+        <input
+          type="file"
+          id="upload-docx"
+          style="display: none"
+          (change)="onFileSelected($event)"
+        />
+        <button
+          nz-button
+          nzType="primary"
+          class="tw-mb-2.5"
+          (click)="uploadFile('upload-docx')"
+        >
+          upload Docx
+        </button>
+      </div>
+      <div id="docxFileJsonEditor" class="tw-h-full"></div>
+    </section>
+    <section>
+      <div>
+        <input
+          type="file"
+          id="upload-default-json"
+          style="display: none"
+          (change)="onFileSelected($event)"
+        />
+        <button
+          nz-button
+          nzType="primary"
+          class="tw-mb-2.5"
+          (click)="uploadFile('upload-default-json')"
+        >
+          上传 json 配置
+        </button>
+      </div>
+      <div id="settingJsonEditor" class="tw-h-full"></div>
+    </section>
+  </div>
 </div>

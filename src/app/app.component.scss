@@ -1,11 +1,16 @@
-#app-home{
+#app-home {
   height: 100vh;
   width: 100vw;
-  padding:20px;
-  ::ng-deep{
-    #jsonEditor{
-      height:calc( 100% - 100px);
+  padding: 20px;
+
+  .jsonContainer {
+    section {
+      flex: 1 1 50%;
+      ::ng-deep {
+        .jsoneditor {
+          height: calc(100% - 100px);
+        }
+      }
     }
   }
- 
 }

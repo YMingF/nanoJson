@@ -15,14 +15,16 @@ import { DOCUMENT } from '@angular/common';
   styleUrl: './app.component.scss',
 })
 export class AppComponent implements OnInit, AfterViewInit {
-  jsonEditor: any;
+  docxFileJsonEditor: any;
+  settingJsonEditor: any;
   constructor(
     private docProcessSvc: DocProcessService,
     @Inject(DOCUMENT) private document: Document
   ) {}
   ngOnInit() {}
   ngAfterViewInit() {
-    this.initializeJsonEditor();
+    this.initializeJsonEditor('docxFileJsonEditor');
+    this.initializeJsonEditor('settingJsonEditor');
   }
 
   onFileSelected(event: Event) {
@@ -37,22 +39,26 @@ export class AppComponent implements OnInit, AfterViewInit {
     console.log('run');
   }
 
-  private initializeJsonEditor() {
+  private initializeJsonEditor(editorId: string) {
     if (typeof window !== 'undefined') {
       import('jsoneditor').then((JSONEditorModule) => {
         const JSONEditor = JSONEditorModule.default;
-        const container = document.getElementById('jsonEditor');
+        const container = document.getElementById(editorId);
         if (!container) {
           return;
         }
         const options = { mode: 'code' } as JSONEditorOptions;
-        this.jsonEditor = new JSONEditor(container, options);
+        if (editorId === 'docxFileJsonEditor') {
+          this.docxFileJsonEditor = new JSONEditor(container, options);
+        } else {
+          this.settingJsonEditor = new JSONEditor(container, options);
+        }
       });
     }
   }
 
-  uploadFile() {
-    this.document.getElementById('upload-docx')?.click();
+  uploadFile(id: string) {
+    this.document.getElementById(id)?.click();
   }
 
   readDocx(file: Blob) {
@@ -112,6 +118,6 @@ export class AppComponent implements OnInit, AfterViewInit {
         tableData.push(rowData);
       }
     }
-    this.jsonEditor.set(this.docProcessSvc.processTableData(tableData));
+    this.docxFileJsonEditor.set(this.docProcessSvc.processTableData(tableData));
   }
 }
