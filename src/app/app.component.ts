@@ -6,11 +6,12 @@ import 'jsoneditor/dist/jsoneditor.css';
 import { JSONEditorOptions } from 'jsoneditor';
 import { NzButtonComponent } from 'ng-zorro-antd/button';
 import { DOCUMENT } from '@angular/common';
+import { NzTooltipDirective } from 'ng-zorro-antd/tooltip';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NzButtonComponent],
+  imports: [RouterOutlet, NzButtonComponent, NzTooltipDirective],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
@@ -32,7 +33,11 @@ export class AppComponent implements OnInit, AfterViewInit {
     const file = fileInput.files?.[0];
 
     if (file) {
-      this.readDocx(file);
+      if (file.type === 'application/json') {
+        this.readJsonData(file);
+      } else {
+        this.readDocx(file);
+      }
     }
 
     fileInput.value = '';
@@ -47,7 +52,12 @@ export class AppComponent implements OnInit, AfterViewInit {
         if (!container) {
           return;
         }
-        const options = { mode: 'code' } as JSONEditorOptions;
+        const options = {
+          mode: 'code',
+          onChange: () => {
+            this.handleJsonEditorChange(editorId);
+          },
+        } as JSONEditorOptions;
         if (editorId === 'docxFileJsonEditor') {
           this.docxFileJsonEditor = new JSONEditor(container, options);
         } else {
@@ -60,7 +70,12 @@ export class AppComponent implements OnInit, AfterViewInit {
   uploadFile(id: string) {
     this.document.getElementById(id)?.click();
   }
-
+  handleJsonEditorChange(editorId: string) {
+    if (editorId === 'docxFileJsonEditor') {
+    } else {
+      this.docProcessSvc.jsonSettingData = this.settingJsonEditor.get();
+    }
+  }
   readDocx(file: Blob) {
     const reader = new FileReader();
 
@@ -73,6 +88,22 @@ export class AppComponent implements OnInit, AfterViewInit {
     };
 
     reader.readAsArrayBuffer(file as Blob);
+  }
+  readJsonData(file: Blob) {
+    const reader = new FileReader();
+    reader.readAsText(file);
+
+    reader.onload = (e) => {
+      const text = reader.result as string;
+
+      try {
+        const parsedData = JSON.parse(text);
+        this.settingJsonEditor.set(parsedData);
+        this.docProcessSvc.jsonSettingData = parsedData;
+      } catch (error) {
+        console.error('Invalid JSON file', error);
+      }
+    };
   }
 
   processDocx(arrayBuffer: Buffer) {

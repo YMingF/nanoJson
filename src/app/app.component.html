@@ -31,6 +31,9 @@
           nz-button
           nzType="primary"
           class="tw-mb-2.5"
+          nz-tooltip
+          [nzTooltipTitle]="titleTemplate"
+          nzTooltipColor="#000"
           (click)="uploadFile('upload-default-json')"
         >
           上传 json 配置
@@ -40,3 +43,9 @@
     </section>
   </div>
 </div>
+
+<ng-template #titleTemplate>
+  <a class="tw-text-white" href="https://www.wolai.com/46cmDK11btNRZq97Dn8Nqu"
+    >查看详情</a
+  >
+</ng-template>

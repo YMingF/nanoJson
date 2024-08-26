@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import { merge } from 'lodash';
 
 @Injectable({
   providedIn: 'root',
 })
 export class DocProcessService {
+  jsonSettingData: any = {};
   extractText(input: string): { en: string; tc: string } {
     const enPattern = /[A-Za-z][^\u4e00-\u9fff]*/;
     const tcPattern = /[\u4e00-\u9fff][^A-Za-z]*/;
@@ -60,6 +62,7 @@ export class DocProcessService {
       } else if (/date/i.test(fieldType)) {
         entry.type = 'multi_format_date';
       }
+      merge(entry, this.jsonSettingData[entry.type]);
 
       // 根据 remark 插入只读属性
       if (/\bread only\b/i.test(remark)) {
